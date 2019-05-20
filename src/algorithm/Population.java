@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import pack.snack;
+import algorithm.Chromosome;
 
 /**
  * @author Carlo Cena
@@ -21,7 +22,7 @@ public class Population {
 	private double pc;
 	private double pm;
 	private List<snack> snacks;
-	List<Integer> tmp;
+	private List<Integer> tmp;
 	
 	public Population(int size, double pc, double pm, List<snack> snacks, int dimension) {
 		this.size = size;

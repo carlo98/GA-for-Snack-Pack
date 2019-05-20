@@ -32,8 +32,6 @@ public class TestApp {
 
 		private List<snack> snacks;
 		private int maxWeight;
-		private int[] bestSol;
-		private int[] sol;
 		private double bestVal;
 		private int dimension;
 		
@@ -41,8 +39,6 @@ public class TestApp {
 			this.snacks = snacks;
 			this.maxWeight = maxWeight;
 			this.dimension = dimension;
-			this.bestSol = new int[this.snacks.size()*dimension];
-			this.sol = new int[this.snacks.size()*dimension];
 		}
 
 		@Override
@@ -54,14 +50,11 @@ public class TestApp {
 		
 		private void findBest(int pos, double val, double weight) {
 			if(pos >= this.snacks.size()*dimension) {
-				if(val > this.bestVal) {
+				if(val > this.bestVal) 
 					this.bestVal = val;
-					this.bestSol = this.sol.clone();
-				}
 				return;
 			}
 			for(int i=0;i<this.snacks.size();++i) {
-				this.sol[pos] = i;
 				if(this.snacks.get(i).getWeight() + weight < maxWeight)
 					findBest(pos+1, val+this.snacks.get(i).getValue(), weight+this.snacks.get(i).getWeight());
 				else
