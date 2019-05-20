@@ -49,16 +49,19 @@ public class Population {
 		double value;
 		double weight;
 		int i;
+		boolean flag = false;
 		for(Chromosome c: this.inhabitants) {
 			value = 0.0;
 			weight = 0.0;
 			i = 0;
-			while(weight < maxWeight && i < c.getIds().size()) {
+			while(weight < maxWeight && i < c.getIds().size() && !flag) {
 				if(weight + this.snacks.get(c.getIds().get(i)).getWeight() < maxWeight) {
 					weight += this.snacks.get(c.getIds().get(i)).getWeight();
 					value += this.snacks.get(c.getIds().get(i)).getValue();
+					i++;
 				}
-				i++;
+				else
+					flag = true;
 			}
 			c.setFit(value);
 			this.S += value;
@@ -140,7 +143,7 @@ public class Population {
 			tmp.addAll(this.inhabitants.get(i).getIds());
 			
 			//NO CROSSOVER
-			if(this.pc >= Math.random()) {
+			if(this.pc < Math.random()) {
 				for(j = 0;j < half_size;++j) {
 					//From first_parent
 					tmp.set(j, this.inhabitants.get(first_parent).getIds().get(j));
@@ -149,13 +152,10 @@ public class Population {
 				}
 			}
 			//CROSSOVER
-			else
-				for(j = 0;j < half_size;++j) {
-					//From first_parent
-					tmp.set(half_size+j, this.inhabitants.get(first_parent).getIds().get(half_size+j));
-					//From second_parent
-					tmp.set(j, this.inhabitants.get(second_parent).getIds().get(j));
-				}
+			else {
+				//this.OnePoint(half_size, first_parent, second_parent);
+				this.Uniform(first_parent, second_parent);
+			}
 			this.inhabitants.get(i).setIds(tmp);
 			
 			//MUTATION
@@ -168,6 +168,24 @@ public class Population {
 				}
 				this.inhabitants.get(i).setIds(tmp);
 			}
+		}
+	}
+	
+	private void OnePoint(int half_size, int first_parent, int second_parent) {
+		for(int j = 0;j < half_size;++j) {
+			//From first_parent
+			tmp.set(half_size+j, this.inhabitants.get(first_parent).getIds().get(half_size+j));
+			//From second_parent
+			tmp.set(j, this.inhabitants.get(second_parent).getIds().get(j));
+		}
+	}
+	
+	private void Uniform(int first_parent, int second_parent) {
+		for(int i=0;i < this.inhabitants.get(0).getIds().size();++i) {
+			if(Math.random()*2 >= 1)
+				tmp.set(i, this.inhabitants.get(first_parent).getIds().get(i));
+			else
+				tmp.set(i, this.inhabitants.get(second_parent).getIds().get(i));
 		}
 	}
 

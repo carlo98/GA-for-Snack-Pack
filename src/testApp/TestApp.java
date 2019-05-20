@@ -20,12 +20,12 @@ public class TestApp {
 		snacks.add(new snack(10.0, 40.0, "Sei"));
 		
 		//BestSolution
-		Thread t1 = new Thread(new bestSolution(snacks, 42, 1));
+		//Thread t1 = new Thread(new bestSolution(snacks, 42, 2));
 		Thread t2 = new Thread(new solution(snacks));
-		t1.start();
+		//t1.start();
 		t2.start();
 		t2.join();
-		t1.join();
+		//t1.join();
 	}
 	
 	public static class solution implements Runnable{
@@ -38,8 +38,8 @@ public class TestApp {
 
 		@Override
 		public void run() {
-			Population myPopulation = new Population(100, 0.80, 0.20, snacks, 1);
-			Plate myPlate = new Plate(myPopulation, 50, 42);
+			Population myPopulation = new Population(1000, 0.80, 0.20, snacks, 2);
+			Plate myPlate = new Plate(myPopulation, 10000, 42);
 			myPlate.StartStudy();
 		}
 		
@@ -71,12 +71,9 @@ public class TestApp {
 					this.bestVal = val;
 				return;
 			}
-			for(int i=0;i<this.snacks.size();++i) {
+			for(int i=0;i<this.snacks.size();++i) 
 				if(this.snacks.get(i).getWeight() + weight < maxWeight)
 					findBest(pos+1, val+this.snacks.get(i).getValue(), weight+this.snacks.get(i).getWeight());
-				else
-					findBest(pos+1, val, weight);
-			}
 		}
 	}
 	
