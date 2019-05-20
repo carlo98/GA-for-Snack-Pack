@@ -2,14 +2,14 @@ package testApp;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import algorithm.Plate;
 import algorithm.Population;
 import pack.snack;
 
+
 public class TestApp {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
 		List<snack> snacks = new ArrayList<>();
 		snacks.add(new snack(2.0, 10.0, "Uno"));
@@ -20,12 +20,29 @@ public class TestApp {
 		snacks.add(new snack(10.0, 40.0, "Sei"));
 		
 		//BestSolution
-		Thread t = new Thread(new bestSolution(snacks, 42, 3));
-		t.start();
+		Thread t1 = new Thread(new bestSolution(snacks, 42, 1));
+		Thread t2 = new Thread(new solution(snacks));
+		t1.start();
+		t2.start();
+		t2.join();
+		t1.join();
+	}
+	
+	public static class solution implements Runnable{
 		
-		Population myPopulation = new Population(100, 0.80, 0.20, snacks, 3);
-		Plate myPlate = new Plate(myPopulation, 50, 42);
-		myPlate.StartStudy();
+		List<snack> snacks;
+		
+		public solution(List<snack> snacks) {
+			this.snacks = snacks;
+		}
+
+		@Override
+		public void run() {
+			Population myPopulation = new Population(100, 0.80, 0.20, snacks, 1);
+			Plate myPlate = new Plate(myPopulation, 50, 42);
+			myPlate.StartStudy();
+		}
+		
 	}
 	
 	public static class bestSolution implements Runnable{

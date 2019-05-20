@@ -5,6 +5,7 @@ package algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Carlo Cena
@@ -36,6 +37,23 @@ class Chromosome implements Comparable<Chromosome> {
 	void setIds(List<Integer> ids) {
 		this.ids.clear();
 		this.ids.addAll(ids);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(fit);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Chromosome other = (Chromosome) obj;
+		return Double.doubleToLongBits(fit) == Double.doubleToLongBits(other.fit);
 	}
 
 	@Override
