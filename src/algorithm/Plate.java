@@ -39,7 +39,7 @@ public class Plate {
 			//Debug
 			//System.out.println(current_value+ " "+cont);
 		}
-		System.out.println("Value of best solution: "+this.myPopulation.getBestValue()+
-							" best solution: "+this.myPopulation.getBestIds());
+		System.out.println("Value of best found solution: "+this.myPopulation.getBestValue()+
+							" best found solution: "+this.myPopulation.getBestIds());
 	}
 }

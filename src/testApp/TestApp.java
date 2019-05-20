@@ -19,8 +19,55 @@ public class TestApp {
 		snacks.add(new snack(0.5, 0.5, "Cinque"));
 		snacks.add(new snack(10.0, 40.0, "Sei"));
 		
-		Population myPopulation = new Population(500, 0.70, 0.30, snacks);
+		//BestSolution
+		Thread t = new Thread(new bestSolution(snacks, 42, 3));
+		t.start();
+		
+		Population myPopulation = new Population(100, 0.80, 0.20, snacks, 3);
 		Plate myPlate = new Plate(myPopulation, 50, 42);
 		myPlate.StartStudy();
 	}
+	
+	public static class bestSolution implements Runnable{
+
+		private List<snack> snacks;
+		private int maxWeight;
+		private int[] bestSol;
+		private int[] sol;
+		private double bestVal;
+		private int dimension;
+		
+		public bestSolution(List<snack> snacks, int maxWeight, int dimension) {
+			this.snacks = snacks;
+			this.maxWeight = maxWeight;
+			this.dimension = dimension;
+			this.bestSol = new int[this.snacks.size()*dimension];
+			this.sol = new int[this.snacks.size()*dimension];
+		}
+
+		@Override
+		public void run() {
+			
+			findBest(0, 0.0, 0.0);
+			System.out.println("Value of optimal solution: "+this.bestVal);
+		}
+		
+		private void findBest(int pos, double val, double weight) {
+			if(pos >= this.snacks.size()*dimension) {
+				if(val > this.bestVal) {
+					this.bestVal = val;
+					this.bestSol = this.sol.clone();
+				}
+				return;
+			}
+			for(int i=0;i<this.snacks.size();++i) {
+				this.sol[pos] = i;
+				if(this.snacks.get(i).getWeight() + weight < maxWeight)
+					findBest(pos+1, val+this.snacks.get(i).getValue(), weight+this.snacks.get(i).getWeight());
+				else
+					findBest(pos+1, val, weight);
+			}
+		}
+	}
+	
 }

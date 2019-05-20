@@ -23,7 +23,7 @@ public class Population {
 	private List<snack> snacks;
 	List<Integer> tmp;
 	
-	public Population(int size, double pc, double pm, List<snack> snacks) {
+	public Population(int size, double pc, double pm, List<snack> snacks, int dimension) {
 		this.size = size;
 		this.pc = pc;
 		this.pm = pm;
@@ -35,7 +35,7 @@ public class Population {
 		List<Integer> ids = new ArrayList<>();
 		for(int i = 0;i < this.size;++i) {
 			//Adding random snacks 
-			for(int j = 0;j < snacks.size()*5;++j) {
+			for(int j = 0;j < snacks.size()*dimension;++j) {
 				ids.add((int) (Math.random()*snacks.size())) ;
 			}
 			this.inhabitants.add(new Chromosome(ids, 0.0));
